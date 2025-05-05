@@ -1,0 +1,57 @@
+services:
+  wordpress:
+    build: 
+      context:  ./requirements/wordpress
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./tmp/dbwordpress:/var/lib/mysql
+      - ./tmp/wordpressfiles:/var/www/html
+    expose:
+      - "9000"
+    networks:
+      - db
+      - proxy
+    restart: unless-stopped
+
+  mariadb:
+    build: 
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./tmp/dbwordpress:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - db
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+    - ./requirements/nginx/conf/nginx.conf_temp:/conf/nginx.conf_temp:ro
+    - ../secrets/nginx/certs:/etc/nginx/certs:rw
+    - ./tmp/wordpressfiles:/var/www/html
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    networks:
+      - proxy
+      - db
+    restart: unless-stopped
+
+networks:
+  db:
+    driver: bridge
+  proxy:
+    driver: bridge
+
+
