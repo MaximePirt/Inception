@@ -1,5 +1,6 @@
 doker-compose := docker-compose
 
+COMPOSE_FILE = srcs/docker-compose.yml
 
 up:
 	$(docker-compose) up

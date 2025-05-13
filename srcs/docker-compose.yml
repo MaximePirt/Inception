@@ -10,6 +10,8 @@ services:
       - ./tmp/wordpressfiles:/var/www/html
     expose:
       - "9000"
+    depends_on:
+      - mariadb
     networks:
       - db
       - proxy
@@ -53,5 +55,10 @@ networks:
     driver: bridge
   proxy:
     driver: bridge
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: "fd00:dead:beef::/64"
 
 

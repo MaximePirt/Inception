@@ -17,7 +17,6 @@ until mysqladmin --socket=/run/mysqld/mysqld.sock --user=root -p"${DB_ROOT_PASSW
     sleep 1
 done
 
-
 echo "Securing MariaDB installation..."
 mysql --user=root --socket=/run/mysqld/mysqld.sock -p"${DB_ROOT_PASSWORD}" <<EOF
 CREATE DATABASE IF NOT EXISTS ${DB_NAME};
@@ -29,7 +28,6 @@ GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${ADMIN_USER}'@'localhost';
 GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${ADMIN_USER}'@'%';
 DROP DATABASE IF EXISTS test;
 DROP DATABASE IF EXISTS performance_schema;
-DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';
 FLUSH PRIVILEGES;
 EOF
 

@@ -29,13 +29,6 @@ fi
 	--path="${WP_PATH}" \
 	 --allow-root
 
-current_url=$(wp option get siteurl --allow-root --path="$WP_PATH")
-
-if [ "$current_url" != "$WP_DNS" ] && [ -n "$current_url" ]; then
-  echo "[INFO] Updating WordPress siteurl and home to $WP_DNS..."
-  wp option update siteurl "https://${WP_DNS}" --allow-root --path="$WP_PATH"
-  wp option update home "https://${WP_DNS}" --allow-root --path="$WP_PATH"
-fi
 
 
 mkdir -p /run/php
