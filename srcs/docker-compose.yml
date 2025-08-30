@@ -10,8 +10,7 @@ services:
     expose:
       - "9000"
     depends_on:
-      mariadb:
-        condition: service_healthy
+      - mariadb
     networks:
       - db
       - proxy
@@ -30,11 +29,6 @@ services:
     networks:
       - db
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psupersecret"]
-      interval: 5s
-      timeout: 3s
-      retries: 20
 
   nginx:
     build:
