@@ -6,12 +6,12 @@ services:
     env_file:
       - .env
     volumes:
-      - ./tmp/dbwordpress:/var/lib/mysql
-      - ./tmp/wordpressfiles:/var/www/html
+      - wordpress-files:/var/www/html
     expose:
       - "9000"
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     networks:
       - db
       - proxy
@@ -24,12 +24,17 @@ services:
     env_file:
       - .env
     volumes:
-      - ./tmp/dbwordpress:/var/lib/mysql
+      - wordpress-db:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
       - db
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psupersecret"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
 
   nginx:
     build:
@@ -38,9 +43,7 @@ services:
     env_file:
       - .env
     volumes:
-    - ./requirements/nginx/conf/nginx.conf_temp:/conf/nginx.conf_temp:ro
-    - ../secrets/nginx/certs:/etc/nginx/certs:rw
-    - ./tmp/wordpressfiles:/var/www/html
+      - wordpress-files:/var/www/html
     ports:
       - "443:443"
     depends_on:
@@ -49,6 +52,20 @@ services:
       - proxy
       - db
     restart: unless-stopped
+
+volumes:
+  wordpress-db:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mpierrot/data/mysql
+      o: bind
+  wordpress-files:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mpierrot/data/mysql
+      o: bind
 
 networks:
   db:

@@ -12,7 +12,7 @@ build:
 	$(DOCKER-COMPOSE) build
 
 down:
-	$(DOCKER-COMPOSE) down
+	$(DOCKER-COMPOSE) down -v
 
 clean:
 	$(DOCKER-COMPOSE) down --rmi all

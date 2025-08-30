@@ -2,6 +2,7 @@ FROM debian:oldstable
 
 RUN apt-get update && apt-get upgrade -y && \
 	apt-get install -y mariadb-server \
+	&& apt-get install -y gosu \
 	&& apt clean \
 	&& rm -rf /var/lib/apt/lists/*
 

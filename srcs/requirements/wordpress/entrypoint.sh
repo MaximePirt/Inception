@@ -33,7 +33,17 @@ fi
 
 mkdir -p /run/php
 
-sed -i 's|^listen = .*|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf
+FOUND=""
+for c in /usr/local/etc/php-fpm.d/www.conf /etc/php/*/fpm/pool.d/www.conf; do
+  for f in $c; do
+    if [ -f "$f" ]; then
+		sed -ri 's@^;?\s*listen\s*=.*$@listen = [::]:9000@' "$f"
+      FOUND="$f"; break
+    fi
+  done
+  [ -n "$FOUND" ] && break
+done
+[ -z "$FOUND" ] && echo "WARNING: www.conf can not be found, no modification applied."
 
 
 exec php-fpm -F

@@ -13,28 +13,26 @@ CERT_PATH="/etc/nginx/certs"
 CRT="$CERT_PATH/fullchain.crt"
 KEY="$CERT_PATH/privkey.key"
 
-# Créer le dossier s’il n'existe pas
 mkdir -p "$CERT_PATH"
 
-# Générer les certificats autosignés s’ils n’existent pas déjà
+#create certs if does not exist
 if [ ! -f "$CRT" ] || [ ! -s "$CRT" ] || [ ! -f "$KEY" ] || [ ! -s "$KEY" ]; then
-  echo "[INFO] Creating self-signed certificate..."
+  echo "Creating self-signed certificate..."
   openssl req -x509 -nodes -days 365 \
     -newkey rsa:2048 \
     -keyout "$KEY" \
     -out "$CRT" \
     -subj "/C=FR/ST=France/L=Paris/O=Inception/CN=localhost"
 else
-  echo "[INFO] Certificate and key already exist."
+  echo "Certificate and key already exist."
 fi
 
 
-echo "[WAIT] Waiting for php-fpm on wordpress:9000..."
+echo "Waiting for php-fpm on wordpress:9000..."
 until nc -z wordpress 9000; do
-  echo "[WAIT] Still waiting for php-fpm..."
+  echo "Still waiting for php-fpm..."
   sleep 1
 done
-echo "[OK] php-fpm is up!"
-
+echo "php-fpm is up!"
 
 exec nginx -g 'daemon off;'
