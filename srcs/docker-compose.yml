@@ -16,12 +16,6 @@ services:
       - db
       - proxy
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://wordpress:9000"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
 
   mariadb:
     build: 
