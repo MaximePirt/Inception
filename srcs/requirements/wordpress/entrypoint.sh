@@ -12,8 +12,8 @@ cd "${WP_PATH}" || exit 1
 if [ ! -f "${WP_PATH}/wp-config.php" ]; then
 	wp config create \
 	  --dbname="${DB_NAME}" \
-	  --dbuser="${ADMIN_USER}" \
-	  --dbpass="${ADMIN_USER_PSWD}" \
+	  --dbuser="${DB_USER}" \
+	  --dbpass="${DB_PASSWORD}" \
 	  --dbhost="mariadb" \
 	  --path="${WP_PATH}" \
 	  --allow-root

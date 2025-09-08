@@ -10,11 +10,18 @@ services:
     expose:
       - "9000"
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     networks:
       - db
       - proxy
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://wordpress:9000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   mariadb:
     build: 
@@ -29,6 +36,12 @@ services:
     networks:
       - db
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -u root -p${DB_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   nginx:
     build:
@@ -58,7 +71,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/mpierrot/data/mysql
+      device: /home/mpierrot/data/wordpress
       o: bind
 
 networks:

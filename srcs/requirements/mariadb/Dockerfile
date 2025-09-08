@@ -9,6 +9,9 @@ RUN apt-get update && apt-get upgrade -y && \
 RUN mkdir -p /run/mysqld \
 	&& chown mysql:mysql /run/mysqld
 
+RUN mkdir -p /var/lib/mysql \
+	&& chown -R mysql:mysql /var/lib/mysql
+
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
 
