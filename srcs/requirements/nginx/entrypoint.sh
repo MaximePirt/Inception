@@ -7,7 +7,7 @@ chmod -R 755 /var/www/html
 
 DOMAIN_NAME="${WP_DNS}"
 
-sed "s/DOMAIN_NAME/$WP_DNS/g" /conf/nginx.conf_temp > /etc/nginx/nginx.conf
+sed "s/DOMAIN_NAME/$WP_DNS/g" /conf/nginx.conf > /etc/nginx/nginx.conf
 
 CERT_PATH="/etc/nginx/certs"
 CRT="$CERT_PATH/fullchain.crt"

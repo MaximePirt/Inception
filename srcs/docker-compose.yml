@@ -3,6 +3,8 @@ services:
     build: 
       context:  ./requirements/wordpress
       dockerfile: Dockerfile
+    image: wordpress
+    container_name: wordpress
     env_file:
       - .env
     volumes:
@@ -15,12 +17,14 @@ services:
     networks:
       - db
       - proxy
-    restart: unless-stopped
+    restart: always
 
   mariadb:
     build: 
       context: ./requirements/mariadb
       dockerfile: Dockerfile
+    image: mariadb
+    container_name: mariadb
     env_file:
       - .env
     volumes:
@@ -29,7 +33,7 @@ services:
       - "3306:3306"
     networks:
       - db
-    restart: unless-stopped
+    restart: always
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -u root -p${DB_ROOT_PASSWORD} --silent"]
       interval: 10s
@@ -41,6 +45,8 @@ services:
     build:
       context: ./requirements/nginx
       dockerfile: Dockerfile
+    image: nginx
+    container_name: nginx
     env_file:
       - .env
     volumes:
@@ -52,20 +58,20 @@ services:
     networks:
       - proxy
       - db
-    restart: unless-stopped
+    restart: always
 
 volumes:
   wordpress-db:
     driver: local
     driver_opts:
       type: none
-      device: /home/mpierrot/data/mysql
+      device: ~/data/mysql
       o: bind
   wordpress-files:
     driver: local
     driver_opts:
       type: none
-      device: /home/mpierrot/data/wordpress
+      device: ~/data/wordpress
       o: bind
 
 networks:

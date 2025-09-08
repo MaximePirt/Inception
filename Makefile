@@ -5,8 +5,8 @@ COMPOSE_FILE = srcs/docker-compose.yml
 export COMPOSE_FILE
 
 
-up:
-	@if [ ! -d /home/$(USER)/data/mysql ] || [ ! -d /home/$(USER)/data/wordpress]; then \
+up: build
+	@if [ ! -d /home/$(USER)/data/mysql ] || [ ! -d /home/$(USER)/data/wordpress ]; then \
 		mkdir -p /home/$(USER)/data/mysql; \
 		mkdir -p /home/$(USER)/data/wordpress; \
 	fi
@@ -21,6 +21,7 @@ down:
 
 clean:
 	$(DOCKER-COMPOSE) down --rmi all
+	@sudo rm -rf /home/$(USER)/data/
 
 re: clean build up
 
