@@ -1,0 +1,19 @@
+title: Inception
+origin: 42
+domains: [devops]
+summary:
+  fr: 42 • Docker / Infra
+  en: 42 • Docker / Infra
+description:
+  fr: >
+    Infrastructure Docker Compose qui déploie NGINX (TLS uniquement),
+    WordPress avec PHP-FPM et MariaDB, chaque service construit depuis
+    Debian dans son propre conteneur. Les données persistent via des
+    volumes et les services communiquent sur des réseaux Docker dédiés,
+    dont un réseau avec IPv6 activé.
+  en: >
+    Docker Compose infrastructure deploying NGINX (TLS-only), WordPress
+    with PHP-FPM and MariaDB, each service built from Debian in its own
+    container. Data persists through volumes and services communicate
+    over dedicated Docker networks, including an IPv6-enabled network.
+stack: [Docker, Docker Compose, NGINX, WordPress, MariaDB]
